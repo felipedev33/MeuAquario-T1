@@ -1,0 +1,1657 @@
+<meta charset="utf-8">
+<title>MeuAquário</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<style>
+/* ==========================================================================
+   MeuAquário — documento de mockups e Canvas (Trabalho 1)
+   PLANO DE DESIGN
+   Cor ....... água profunda: fundo levemente ciano, tinta #0B2027,
+               teal do próprio app como acento, cores de status herdadas da UI
+   Tipo ...... Bricolage Grotesque (títulos) + Source Sans 3 (texto)
+               + IBM Plex Mono (anotações de especificação)
+   Layout .... folhas empilhadas: moldura de documento técnico, com as telas
+               do app renderizadas como aparelhos reais e a especificação ao lado
+   ========================================================================== */
+
+:root{
+  --ground:#EDF3F4;
+  --paper:#FFFFFF;
+  --ink:#0B2027;
+  --muted:#5A6B73;
+  --line:#D6E2E6;
+  --line-strong:#AFC3C9;
+  --accent:#0B7285;
+  --accent-2:#1098AD;
+  --accent-soft:#DCEEF2;
+  --ok:#2B8A3E;
+  --warn:#E8590C;
+  --danger:#C92A2A;
+  --ok-soft:#E3F7E8;
+  --warn-soft:#FFF0E0;
+  --danger-soft:#FFE3E3;
+  --font-display:"Bricolage Grotesque","Archivo",system-ui,sans-serif;
+  --font-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Menlo,monospace;
+  --shadow:0 1px 2px rgba(6,32,38,.06),0 10px 26px rgba(6,32,38,.07);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#081215;
+    --paper:#0F1E21;
+    --ink:#E3F0F2;
+    --muted:#94A9AF;
+    --line:#1D3438;
+    --line-strong:#2C4A50;
+    --accent:#4DD0E1;
+    --accent-2:#22B8CF;
+    --accent-soft:#0F3238;
+    --ok:#69DB7C;
+    --warn:#FFA94D;
+    --danger:#FF8787;
+    --ok-soft:#12301A;
+    --warn-soft:#33210F;
+    --danger-soft:#331717;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 28px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#081215;
+  --paper:#0F1E21;
+  --ink:#E3F0F2;
+  --muted:#94A9AF;
+  --line:#1D3438;
+  --line-strong:#2C4A50;
+  --accent:#4DD0E1;
+  --accent-2:#22B8CF;
+  --accent-soft:#0F3238;
+  --ok:#69DB7C;
+  --warn:#FFA94D;
+  --danger:#FF8787;
+  --ok-soft:#12301A;
+  --warn-soft:#33210F;
+  --danger-soft:#331717;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 12px 28px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  padding-inline:16px;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+.doc{
+  max-width:1020px;
+  margin-inline:auto;
+  padding-block:30px 60px;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;letter-spacing:-.02em;margin:0}
+
+.mono{font-family:var(--font-mono)}
+
+/* ---------- capa ---------- */
+.cover{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:clamp(22px,4vw,44px);
+  box-shadow:var(--shadow);
+}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin:0 0 14px;
+}
+.cover h1{
+  font-size:clamp(38px,7vw,64px);
+  font-weight:800;
+  line-height:1;
+  margin-bottom:10px;
+}
+.cover .sub{
+  font-size:clamp(17px,2.2vw,21px);
+  color:var(--muted);
+  max-width:46ch;
+  margin:0 0 26px;
+}
+.meta{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:18px 24px;
+  border-top:1px solid var(--line);
+  padding-top:20px;
+}
+.meta dt{
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:3px;
+}
+.meta dd{margin:0;font-size:15px;font-weight:600}
+
+.como{
+  margin-top:26px;
+  padding:16px 18px;
+  background:var(--accent-soft);
+  border-radius:14px;
+  font-size:14.5px;
+}
+.como strong{color:var(--accent)}
+
+/* ---------- cabeçalho de seção ---------- */
+section{margin-top:56px}
+.sec-head{
+  display:flex;
+  align-items:baseline;
+  gap:16px;
+  border-top:3px solid var(--ink);
+  padding-top:14px;
+  margin-bottom:8px;
+}
+.sec-head .n{
+  font-family:var(--font-mono);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.1em;
+  color:var(--accent);
+}
+.sec-head h2{font-size:clamp(24px,4vw,34px);font-weight:700}
+.lead{color:var(--muted);max-width:74ch;margin:6px 0 26px}
+
+/* ---------- 10 telas do papel ---------- */
+.wires{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(228px,1fr));
+  gap:26px 22px;
+}
+.wire{display:flex;flex-direction:column;gap:10px}
+.wire figcaption{
+  display:flex;
+  align-items:baseline;
+  gap:9px;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:15px;
+}
+.wire .n{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--accent);
+  border:1px solid var(--accent);
+  border-radius:5px;
+  padding:0 4px;
+  line-height:1.5;
+}
+.wire-screen{
+  aspect-ratio:9/17.4;
+  border:1.5px solid var(--line-strong);
+  border-radius:15px;
+  background:var(--paper);
+  padding:9px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  overflow:hidden;
+}
+.wb{
+  border:1px dashed var(--line-strong);
+  border-radius:6px;
+  padding:5px 6px;
+  font-family:var(--font-mono);
+  font-size:9px;
+  line-height:1.35;
+  color:var(--muted);
+}
+.wb.grow{flex:1}
+.wb.accent{border-style:solid;border-color:var(--accent);color:var(--accent)}
+.wb.fill{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.wb.danger{border-color:var(--danger);color:var(--danger)}
+.wb.nav{margin-top:auto;text-align:center;letter-spacing:.06em}
+.wrow{display:flex;gap:6px}
+.wrow > *{flex:1}
+.wire-note{
+  font-size:13px;
+  color:var(--muted);
+  margin:0;
+  line-height:1.45;
+}
+.wire-note b{color:var(--ink);font-weight:600}
+
+/* ---------- 5 telas digitais ---------- */
+.mockups{display:flex;flex-direction:column;gap:40px}
+.mock{
+  display:grid;
+  grid-template-columns:minmax(0,330px) minmax(0,1fr);
+  gap:clamp(18px,3vw,40px);
+  align-items:start;
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:clamp(16px,2.6vw,26px);
+  box-shadow:var(--shadow);
+}
+@media (max-width:720px){ .mock{grid-template-columns:1fr} }
+.mock-side{min-width:0}
+.mock-side h3{
+  font-size:21px;
+  margin-bottom:2px;
+}
+.mock-side .role{
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin:0 0 16px;
+}
+.spec{margin:0 0 16px}
+.spec dt{
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:5px;
+}
+.spec dd{margin:0;font-size:14.5px}
+.spec ul{margin:0;padding-left:17px;font-size:14.5px}
+.spec li{margin-bottom:3px}
+.spec li b{font-weight:600}
+
+/* ---------- moldura do aparelho ---------- */
+.phone{
+  --p-bg:#F1F8FA;
+  --p-surface:#FFFFFF;
+  --p-primary:#0B7285;
+  --p-accent:#1098AD;
+  --p-text:#0B2027;
+  --p-muted:#52616B;
+  --p-line:#E2F1F5;
+  --p-soft:#DCEEF2;
+  width:100%;
+  max-width:330px;
+  aspect-ratio:9/18.6;
+  background:#04161A;
+  border-radius:30px;
+  padding:7px;
+  box-shadow:0 14px 34px rgba(6,32,38,.22);
+}
+@media (max-width:720px){ .phone{margin-inline:auto} }
+.phone-in{
+  position:relative;
+  width:100%;
+  height:100%;
+  border-radius:24px;
+  overflow:hidden;
+  background:var(--p-bg);
+  color:var(--p-text);
+  display:flex;
+  flex-direction:column;
+  font-size:11.5px;
+  line-height:1.35;
+}
+.p-status{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:8.5px;
+  font-weight:600;
+  padding:7px 14px 3px;
+  color:#fff;
+  opacity:.9;
+}
+.p-top{background:var(--p-primary);flex:0 0 auto}
+.p-top.grad{background:linear-gradient(115deg,#0B7285,#22B8CF)}
+.p-bar{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:2px 13px 11px;
+  color:#fff;
+}
+.p-bar .t{font-size:13.5px;font-weight:700;flex:1;letter-spacing:-.01em}
+.p-body{flex:1;overflow:hidden;padding:11px;display:flex;flex-direction:column;gap:9px}
+.p-card{
+  background:var(--p-surface);
+  border-radius:13px;
+  padding:11px;
+  box-shadow:0 1px 2px rgba(6,32,38,.07);
+}
+.p-soft{background:var(--p-soft);border-radius:13px;padding:11px}
+.p-hero{
+  background:linear-gradient(115deg,#0B7285,#22B8CF);
+  color:#fff;
+  padding:13px 14px 17px;
+  border-end-start-radius:22px;
+  border-end-end-radius:22px;
+}
+.p-hero .lab{font-size:9.5px;opacity:.85}
+.p-hero .big{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.p-hero .big small{font-size:11px;font-weight:600;opacity:.9;letter-spacing:0}
+.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.p-tile{
+  background:var(--p-surface);
+  border-radius:12px;
+  padding:8px 5px;
+  text-align:center;
+  box-shadow:0 1px 2px rgba(6,32,38,.07);
+}
+.p-tile .dot{
+  width:21px;height:21px;border-radius:50%;
+  margin:0 auto 5px;
+  display:flex;align-items:center;justify-content:center;
+}
+.p-tile .v{font-size:14px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.p-tile .r{font-size:8px;color:var(--p-muted)}
+.p-sec{
+  font-size:10.5px;
+  font-weight:700;
+  margin:3px 0 -3px;
+  letter-spacing:.01em;
+}
+.p-row{display:flex;align-items:center;gap:9px}
+.p-sq{
+  width:33px;height:33px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex:0 0 auto;
+}
+.p-name{font-size:12.5px;font-weight:700;letter-spacing:-.01em}
+.p-sub{font-size:9.5px;color:var(--p-muted)}
+.p-chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.p-chip{
+  font-size:8.5px;
+  font-weight:600;
+  padding:2px 7px;
+  border-radius:20px;
+  background:var(--p-line);
+  color:var(--p-muted);
+  white-space:nowrap;
+}
+.p-chip.a{background:var(--p-soft);color:#075063}
+.p-bar-track{
+  height:7px;
+  border-radius:20px;
+  background:var(--p-line);
+  margin:9px 0 5px;
+  overflow:hidden;
+}
+.p-bar-fill{height:100%;border-radius:20px}
+.p-meta{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-size:8.5px;
+  color:var(--p-muted);
+  font-variant-numeric:tabular-nums;
+}
+.p-fab{
+  position:absolute;
+  right:13px;
+  bottom:68px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:#1098AD;
+  color:#fff;
+  font-size:10.5px;
+  font-weight:700;
+  padding:9px 13px;
+  border-radius:14px;
+  box-shadow:0 4px 10px rgba(16,152,173,.35);
+}
+.p-fab.sem-nav{bottom:15px}
+.p-nav{
+  flex:0 0 auto;
+  margin-top:auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  background:var(--p-surface);
+  border-top:1px solid var(--p-line);
+  padding:7px 4px 9px;
+}
+.p-nav div{
+  text-align:center;
+  font-size:7.5px;
+  color:var(--p-muted);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+}
+.p-nav div.on{color:var(--p-primary);font-weight:700}
+.p-nav .pill{background:var(--p-soft);border-radius:20px;padding:3px 10px;display:flex}
+.p-btn{
+  background:var(--p-primary);
+  color:#fff;
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+  font-size:10.5px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+.p-btn.out{background:transparent;border:1.3px solid var(--p-line);color:var(--p-text)}
+.p-field{
+  border:1.1px solid var(--p-line);
+  border-radius:11px;
+  padding:6px 9px;
+  background:var(--p-surface);
+}
+.p-field .lab{font-size:7.5px;color:var(--p-accent);font-weight:600}
+.p-field .val{font-size:10.5px}
+.p-field .val.ph{color:#9DB2B8}
+.p-2col{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.p-sel{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border:1.6px solid var(--p-primary);
+  background:var(--p-soft);
+  border-radius:11px;
+  padding:8px 9px;
+}
+.p-sel.off{border:1.1px solid var(--p-line);background:var(--p-surface)}
+.p-line{height:1px;background:var(--p-line);margin:8px 0}
+.p-warn{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  font-size:9px;
+  font-weight:600;
+  color:#C92A2A;
+  margin-top:7px;
+}
+.p-stepper{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  margin-top:6px;
+}
+.p-stepper .b{
+  width:26px;height:26px;border-radius:50%;
+  border:1.2px solid var(--p-line);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--p-primary);
+}
+.p-stepper .q{font-size:17px;font-weight:800;padding:0 7px;font-variant-numeric:tabular-nums}
+.p-overlay{
+  position:relative;
+  flex:1;
+  display:flex;
+}
+.p-dialog{
+  position:absolute;
+  inset:auto 11px;
+  top:38%;
+  background:var(--p-surface);
+  border-radius:16px;
+  padding:14px;
+  box-shadow:0 18px 40px rgba(4,22,26,.4);
+}
+.p-dialog h4{margin:0 0 5px;font-size:12.5px;font-family:var(--font-display)}
+.p-dialog p{margin:0;font-size:10px;color:var(--p-muted)}
+.p-dialog .acts{display:flex;justify-content:flex-end;gap:12px;margin-top:11px;font-size:10.5px;font-weight:700}
+.p-scrim{position:absolute;inset:0;background:rgba(4,22,26,.36)}
+
+/* ---------- diagrama de fluxo ---------- */
+.fl-node{fill:var(--paper);stroke:var(--line-strong);stroke-width:1.5}
+.fl-node.aba{fill:var(--accent-soft);stroke:var(--accent)}
+.fl-node.det{fill:var(--paper);stroke:var(--accent-2);stroke-width:2}
+.fl-node.for{fill:var(--paper);stroke:var(--line-strong);stroke-dasharray:5 3}
+.fl-t{font-family:var(--font-mono);font-size:11px;font-weight:600;fill:var(--ink)}
+.fl-t.sm{font-size:9px;font-weight:400;fill:var(--muted)}
+.fl-lab{font-family:var(--font-mono);font-size:9.5px;fill:var(--muted)}
+.fl-edge{stroke:var(--accent);stroke-width:1.6;fill:none;marker-end:url(#seta)}
+.fl-back{stroke:var(--muted);stroke-width:1.4;stroke-dasharray:5 4;fill:none;marker-end:url(#seta-volta)}
+.fl-band{fill:none;stroke:var(--line-strong);stroke-dasharray:7 5;stroke-width:1;rx:16}
+.fl-jump{fill:var(--paper);stroke:var(--line-strong);stroke-width:1.4}
+.fl-num{fill:var(--accent)}
+.fl-num-t{font-family:var(--font-mono);font-size:10px;font-weight:600;fill:#fff}
+#seta path{fill:var(--accent)}
+#seta-volta path{fill:var(--muted)}
+.flow-wrap{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:clamp(14px,2.4vw,24px);
+  box-shadow:var(--shadow);
+}
+.flow-scroll{overflow-x:auto}
+.flow-scroll svg{display:block;min-width:900px;width:100%;height:auto}
+.flow-legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 22px;
+  margin-top:18px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  font-size:13px;
+  color:var(--muted);
+}
+.flow-legend span{display:flex;align-items:center;gap:8px}
+.flow-legend i{width:26px;height:0;border-top:2px solid var(--accent);display:block}
+.flow-legend i.dash{border-top-style:dashed;border-color:var(--muted)}
+.flow-legend i.nav{height:8px;border:0;border-radius:3px;background:var(--accent-soft)}
+
+/* ---------- canvas ---------- */
+.canvas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
+.canvas-card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+.canvas-card .q{
+  font-family:var(--font-display);
+  font-size:17.5px;
+  font-weight:700;
+  margin:0 0 12px;
+  line-height:1.25;
+}
+.canvas-card .q .n{
+  font-family:var(--font-mono);
+  font-size:11px;
+  color:var(--accent);
+  display:block;
+  margin-bottom:6px;
+  letter-spacing:.12em;
+}
+.canvas-card p{margin:0 0 10px;font-size:14.5px}
+.canvas-card p:last-child{margin-bottom:0}
+.pull{
+  border-left:3px solid var(--accent);
+  padding-left:13px;
+  color:var(--ink);
+  font-weight:600;
+}
+
+/* ---------- rodapé ---------- */
+.foot{
+  margin-top:56px;
+  border-top:1px solid var(--line);
+  padding-top:18px;
+  font-size:13px;
+  color:var(--muted);
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 26px;
+  justify-content:space-between;
+}
+
+/* ---------- impressão ---------- */
+@media print{
+  body{background:#fff;padding-inline:0;font-size:12px}
+  .doc{padding-block:0;max-width:none}
+  .cover,.mock,.flow-wrap,.canvas-card{box-shadow:none;border-color:#C9D4D8}
+  section{break-before:page;margin-top:0;padding-top:10px}
+  section:first-of-type{break-before:avoid}
+  .wires{grid-template-columns:repeat(5,1fr);gap:12px}
+  .mockups{gap:0}
+  .mock{break-inside:avoid;border:0;border-top:1px solid #D6E2E6;border-radius:0;padding:16px 0}
+  .phone{aspect-ratio:9/17.6}
+  .mock-side h3{font-size:16px}
+  .spec dd,.spec ul{font-size:11px}
+  .flow-scroll svg{min-width:0}
+  .canvas-grid{grid-template-columns:1fr 1fr}
+  .canvas-card{break-inside:avoid}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+
+<div class="doc">
+
+  <!-- ================= CAPA ================= -->
+  <header class="cover">
+    <p class="eyebrow">Universidade Positivo · Desenvolvimento de Aplicativos Móveis</p>
+    <h1>MeuAquário</h1>
+    <p class="sub">Trabalho 1 — planejamento de produto, mockups das telas, diagrama de navegação e Canvas.</p>
+
+    <dl class="meta">
+      <div><dt>Integrantes</dt><dd>Felipe Gabriel da Silva<br>Huan Machado de Oliveira</dd></div>
+      <div><dt>Tema do app</dt><dd>Aquarismo — controle de aquários e dos peixes que vivem neles</dd></div>
+      <div><dt>Entrega</dt><dd>Trabalho 1 · outubro de 2026</dd></div>
+      <div><dt>Telas programadas</dt><dd>Início · Lista de Aquários · Detalhe do Aquário</dd></div>
+    </dl>
+
+    <p class="como">
+      <strong>Como ler este documento.</strong> A seção A traz as 10 telas idealizadas no papel
+      (o molde de cada uma está aqui, é só desenhar por cima ou redesenhar à mão).
+      A seção B são as 5 telas refeitas em ferramenta digital, com a especificação de cada
+      elemento e do que cada botão faz. A seção C é o mapa de navegação e a seção D responde
+      ao Canvas. As telas digitais usam as mesmas cores e os mesmos números que o aplicativo
+      mostra rodando.
+    </p>
+  </header>
+
+  <!-- ================= A. 10 TELAS NO PAPEL ================= -->
+  <section id="papel">
+    <div class="sec-head"><span class="n">A</span><h2>As 10 telas idealizadas no papel</h2></div>
+    <p class="lead">
+      Cada molde abaixo mostra onde cada elemento fica dentro da tela. A ideia desta etapa era
+      pensar em quantidade de possibilidades antes de refinar qualquer uma delas: por isso as
+      dez convivem aqui, inclusive os estados vazios e as confirmações, que costumam ser
+      esquecidos no desenho e depois viram problema na hora de programar.
+    </p>
+
+    <div class="wires">
+
+      <figure class="wire">
+        <figcaption><span class="n">01</span> Início</figcaption>
+        <div class="wire-screen">
+          <div class="wb fill">TopAppBar “MeuAquário”</div>
+          <div class="wb">Faixa com degradê — total de litros cadastrados e ocupados</div>
+          <div class="wrow">
+            <div class="wb">nº aquários</div>
+            <div class="wb">nº peixes</div>
+            <div class="wb">litros</div>
+          </div>
+          <div class="wb danger">Aviso: aquários superlotados (um botão por aquário)</div>
+          <div class="wrow">
+            <div class="wb accent">Botão: Ver aquários</div>
+            <div class="wb accent">Botão: Ver espécies</div>
+          </div>
+          <div class="wb nav">BottomNavigation</div>
+        </div>
+        <p class="wire-note">
+          <b>Botões:</b> os dois atalhos e os itens da barra levam para as listas; o aviso de
+          superlotação leva direto ao detalhe do aquário com problema.
+        </p>
+      </figure>
+
+      <figure class="wire">
+        <figcaption><span class="n">02</span> Lista de Aquários</figcaption>
+        <div class="wire-screen">
+          <div class="wb fill">TopAppBar “Meus aquários”</div>
+          <div class="wb">Faixa de resumo: totais de litros e ocupação</div>
+          <div class="wb grow">Card: foto/ícone + nome + medidas + litros + barra de ocupação + lixeira</div>
+          <div class="wb grow">Card: mesmo desenho, com o status mudando de cor</div>
+          <div class="wb">Card do aquário superlotado (barra vermelha)</div>
+          <div class="wb accent">Botão flutuante “Novo aquário”</div>
+          <div class="wb nav">BottomNavigation</div>
+        </div>
+        <p class="wire-note">
+          <b>Botões:</b> tocar no card abre o detalhe; a lixeira remove; o botão flutuante abre
+          o formulário.
+        </p>
+      </figure>
+
+      <figure class="wire">
+        <figcaption><span class="n">03</span> Detalhe do Aquário</figcaption>
+        <div class="wire-screen">
+          <div class="wb fill">TopAppBar: voltar + nome + lixeira</div>
+          <div class="wb">Card: nome e medidas</div>
+          <div class="wb accent">Card: volume CALCULADO, com a conta à mostra</div>
+          <div class="wb danger">Card: ocupação — barra, litros, % e status</div>
+          <div class="wb grow">Card: peixes que vivem aqui (vêm da outra lista), cada linha clicável</div>
+          <div class="wb accent">Botão: Adicionar espécie neste aquário</div>
+        </div>
+        <p class="wire-note">
+          <b>Botões:</b> seta volta para a lista, lixeira remove com confirmação, cada peixe abre
+          o detalhe daquela espécie, e o botão do rodapé abre o formulário já com este aquário escolhido.
+        </p>
+      </figure>
+
+      <figure class="wire">
+        <figcaption><span class="n">04</span> Confirmação de remoção</figcaption>
+        <div class="wire-screen">
+          <div class="wb grow">…tela de detalhe ao fundo, escurecida</div>
+          <div class="wb accent">Diálogo: “Remover aquário?”</div>
+          <div class="wb">Texto: nome do aquário e quantas espécies saem junto</div>
+          <div class="wrow">
+            <div class="wb">Cancelar</div>
+            <div class="wb danger">Remover</div>
+          </div>
+        </div>
+        <p class="wire-note">
+          <b>Por que existe:</b> apagar um aquário apaga junto as espécies que vivem nele. Uma
+          ação dessas não pode acontecer com um toque só.
+        </p>
+      </figure>
+
+      <figure class="wire">
+        <figcaption><span class="n">05</span> Lista de Espécies</figcaption>
+        <div class="wire-screen">
+          <div class="wb fill">TopAppBar “Espécies”</div>
+          <div class="wb">Campo de busca (nome popular ou científico)</div>
+          <div class="wb grow">Card: ícone + nome + nome científico + chips (×qtd, cm, litros) + lixeira</div>
+          <div class="wb grow">Card: mais espécies…</div>
+          <div class="wb accent">Botão flutuante “Nova espécie”</div>
+          <div class="wb nav">BottomNavigation</div>
+        </div>
+        <p class="wire-note">
+          <b>Botões:</b> tocar abre o detalhe, toque longo marca a espécie, lixeira remove, botão
+          flutuante abre o formulário.
+        </p>
+      </figure>
+
+      <figure class="wire">
+        <figcaption><span class="n">06</span> Espécies marcadas</figcaption>
+        <div class="wire-screen">
+          <div class="wb fill">TopAppBar “Espécies”</div>
+          <div class="wb">Campo de busca com texto digitado</div>
+          <div class="wb fill">Barra: “3 marcadas” + Cancelar + Remover</div>
+          <div class="wb">Card marcado (borda e fundo destacados)</div>
+          <div class="wb">Card normal</div>
+          <div class="wb">Card normal</div>
+          <div class="wb nav">BottomNavigation</div>
+        </div>
+        <p class="wire-note">
+          <b>Para quê:</b> remover várias espécies de uma vez sem apagar uma por uma. A barra só
+          aparece quando existe pelo menos uma espécie marcada.
+        </p>
+      </figure>
+
+      <figure class="wire">
+        <figcaption><span class="n">07</span> Detalhe da Espécie</figcaption>
+        <div class="wire-screen">
+          <div class="wb fill">TopAppBar: voltar + nome + lixeira</div>
+          <div class="wb">Card: nome, nome científico, chips de quantidade, tamanho e pH</div>
+          <div class="wb accent">Card: litros que a espécie ocupa, com a conta à mostra</div>
+          <div class="wb accent">Card: ajustar quantidade (− e + com recálculo na hora)</div>
+          <div class="wb">Card: em qual aquário vive + botão “Ver aquário”</div>
+          <div class="wb danger">Botão: Remover esta espécie</div>
+        </div>
+        <p class="wire-note">
+          <b>Botões:</b> o − e o + mudam a quantidade e os números do aquário se atualizam na
+          mesma hora; “Ver aquário” pula para o detalhe do aquário.
+        </p>
+      </figure>
+
+      <figure class="wire">
+        <figcaption><span class="n">08</span> Novo Aquário</figcaption>
+        <div class="wire-screen">
+          <div class="wb fill">TopAppBar: voltar + “Novo aquário”</div>
+          <div class="wb">Campo: nome do aquário</div>
+          <div class="wrow">
+            <div class="wb">comp.</div>
+            <div class="wb">larg.</div>
+            <div class="wb">alt.</div>
+          </div>
+          <div class="wb">Chips: Água doce · Plantado · Marinho</div>
+          <div class="wb accent">Prévia: volume calculado e quantos peixes de 4 cm cabem</div>
+          <div class="wb accent">Botão: Salvar aquário</div>
+        </div>
+        <p class="wire-note">
+          <b>Botões:</b> os chips escolhem o tipo, a prévia se atualiza enquanto se digita, e
+          salvar volta para a lista com o aquário novo no fim dela.
+        </p>
+      </figure>
+
+      <figure class="wire">
+        <figcaption><span class="n">09</span> Nova Espécie</figcaption>
+        <div class="wire-screen">
+          <div class="wb fill">TopAppBar: voltar + “Nova espécie”</div>
+          <div class="wb">Campos: nome popular e nome científico</div>
+          <div class="wrow">
+            <div class="wb">quantidade</div>
+            <div class="wb">tamanho cm</div>
+          </div>
+          <div class="wb">Campo: pH ideal</div>
+          <div class="wb">Lista de aquários para escolher (um destacado)</div>
+          <div class="wb accent">Prévia: como o aquário fica depois de salvar</div>
+          <div class="wb accent">Botão: Salvar espécie</div>
+        </div>
+        <p class="wire-note">
+          <b>Botões:</b> tocar em um aquário da lista escolhe onde a espécie vai viver; a prévia
+          avisa em vermelho se aquele aquário vai ficar superlotado.
+        </p>
+      </figure>
+
+      <figure class="wire">
+        <figcaption><span class="n">10</span> Estado vazio e Sobre</figcaption>
+        <div class="wire-screen">
+          <div class="wb fill">TopAppBar</div>
+          <div class="wb grow">Lista vazia: ícone grande + “Nenhum aquário cadastrado” + o que fazer</div>
+          <div class="wb accent">Botão flutuante “Novo aquário”</div>
+          <div class="wb">— e a tela Sobre: proposta do app, integrantes, botão de limpar tudo —</div>
+          <div class="wb dash">Aviso de confirmação antes de limpar</div>
+          <div class="wb nav">BottomNavigation</div>
+        </div>
+        <p class="wire-note">
+          <b>Por que existe:</b> quem abre o app pela primeira vez não pode encontrar uma tela
+          em branco sem explicação. E a limpeza dos dados também precisa de confirmação.
+        </p>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ================= B. 5 TELAS NA FERRAMENTA DIGITAL ================= -->
+  <section id="digital">
+    <div class="sec-head"><span class="n">B</span><h2>As 5 telas na ferramenta digital</h2></div>
+    <p class="lead">
+      Estas são as telas que valem como mockup oficial do projeto: as cinco foram refeitas em
+      ferramenta digital, com a mesma paleta e os mesmos números que o aplicativo mostra rodando.
+      De cada uma, o grupo escolheu três para programar no Trabalho 1 — Início, Lista de Aquários
+      e Detalhe do Aquário.
+    </p>
+
+    <div class="mockups">
+
+      <!-- ---------- TELA 1: INÍCIO ---------- -->
+      <article class="mock">
+        <div class="phone">
+          <div class="phone-in">
+            <div class="p-top">
+              <div class="p-status"><span>14:32</span><span>▮▮▮</span></div>
+              <div class="p-bar">
+                <span class="t">MeuAquário</span>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M12 2.6c4 5.3 6.4 8.4 6.4 11.3a6.4 6.4 0 1 1-12.8 0C5.6 11 8 7.9 12 2.6z"/></svg>
+              </div>
+            </div>
+            <div class="p-hero">
+              <div class="lab">Seus aquários hoje</div>
+              <div class="big">334 <small>litros cadastrados</small></div>
+              <div class="lab" style="margin-top:5px">170 L já ocupados pelos peixes</div>
+            </div>
+            <div class="p-body">
+              <div class="p-grid">
+                <div class="p-tile">
+                  <div class="dot" style="background:rgba(16,152,173,.16);color:#1098AD">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6c4 5.3 6.4 8.4 6.4 11.3a6.4 6.4 0 1 1-12.8 0C5.6 11 8 7.9 12 2.6z"/></svg>
+                  </div>
+                  <div class="v">4</div><div class="r">aquários</div>
+                </div>
+                <div class="p-tile">
+                  <div class="dot" style="background:rgba(76,110,245,.16);color:#4C6EF5">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M21 12c-1.7 3.2-5 5.2-8.4 5.2-4.2 0-7.6-2.6-7.6-5.2s3.4-5.2 7.6-5.2C16 6.8 19.3 8.8 21 12z"/><path d="M5.2 12L1.8 8.8v6.4L5.2 12z"/></svg>
+                  </div>
+                  <div class="v">38</div><div class="r">peixes</div>
+                </div>
+                <div class="p-tile">
+                  <div class="dot" style="background:rgba(43,138,62,.16);color:#2B8A3E">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M2.5 8.5c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2.5 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
+                  </div>
+                  <div class="v">170 L</div><div class="r">ocupados</div>
+                </div>
+              </div>
+              <div class="p-sec">Situação dos aquários</div>
+              <div class="p-card" style="background:#FFE3E3">
+                <div class="p-row" style="gap:7px">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="#C92A2A" aria-hidden="true"><path d="M12 3l9.5 17H2.5L12 3zm-.9 6.2v5.4h1.8V9.2h-1.8zm0 6.6v1.8h1.8v-1.8h-1.8z"/></svg>
+                  <div class="p-name" style="color:#C92A2A;font-size:11.5px">1 aquário(s) superlotado(s)</div>
+                </div>
+                <div class="p-sub" style="margin-top:5px">Toque em um dos aquários abaixo para ver a ocupação e ajustar a quantidade de peixes.</div>
+                <div style="color:#C92A2A;font-size:10px;font-weight:700;margin-top:7px">Ver Aquário do Huan →</div>
+              </div>
+              <div class="p-sec">Atalhos</div>
+              <div class="p-2col">
+                <div class="p-btn out">Ver aquários</div>
+                <div class="p-btn out">Ver espécies</div>
+              </div>
+            </div>
+            <div class="p-nav">
+              <div class="on"><span class="pill">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 3l9 7.5V21h-6v-6H9v6H3V10.5L12 3z"/></svg>
+              </span>Início</div>
+              <div><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6c4 5.3 6.4 8.4 6.4 11.3a6.4 6.4 0 1 1-12.8 0C5.6 11 8 7.9 12 2.6z"/></svg>Aquários</div>
+              <div><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M21 12c-1.7 3.2-5 5.2-8.4 5.2-4.2 0-7.6-2.6-7.6-5.2s3.4-5.2 7.6-5.2C16 6.8 19.3 8.8 21 12z"/><path d="M5.2 12L1.8 8.8v6.4L5.2 12z"/></svg>Espécies</div>
+              <div><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 5h2v2h-2V7zm0 4h2v6h-2v-6z"/></svg>Sobre</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mock-side">
+          <h3>Início</h3>
+          <p class="role">Tela 1 · programada por Felipe</p>
+
+          <dl class="spec">
+            <dt>Elementos</dt>
+            <dd>
+              Barra de título com o nome do app; faixa com degradê mostrando os litros totais
+              cadastrados e os litros já ocupados; três quadros de número (aquários, peixes,
+              litros ocupados); cartão de aviso de superlotação; dois botões de atalho; barra de
+              navegação com quatro abas.
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>Posição</dt>
+            <dd>
+              Tudo empilhado na vertical e rolável. Barra de título fixa no topo, faixa de litros
+              logo abaixo ocupando a largura inteira, os três quadros lado a lado em uma Row,
+              aviso e atalhos abaixo na Column, e a barra de abas fixa no rodapé.
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>O que cada botão faz</dt>
+            <dd>
+              <ul>
+                <li><b>Ver Aquário do Huan</b> — vai direto ao detalhe do aquário que está superlotado.</li>
+                <li><b>Ver aquários</b> e <b>Ver espécies</b> — abrem as duas listas.</li>
+                <li><b>Abas</b> — trocam entre as quatro telas principais.</li>
+              </ul>
+            </dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- ---------- TELA 2: LISTA DE AQUÁRIOS ---------- -->
+      <article class="mock">
+        <div class="phone">
+          <div class="phone-in">
+            <div class="p-top">
+              <div class="p-status"><span>14:32</span><span>▮▮▮</span></div>
+              <div class="p-bar"><span class="t">Meus aquários</span></div>
+            </div>
+            <div class="p-body">
+              <div class="p-soft" style="display:flex;align-items:center;gap:9px">
+                <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#075063" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M2.5 8.5c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2.5 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>
+                <div>
+                  <div class="p-name" style="color:#075063">4 aquários · 334 L no total</div>
+                  <div class="p-sub">170 L ocupados pelos peixes (50%)</div>
+                </div>
+              </div>
+
+              <div class="p-card">
+                <div class="p-row">
+                  <div class="p-sq" style="background:rgba(16,152,173,.15);color:#1098AD">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.6c4 5.3 6.4 8.4 6.4 11.3a6.4 6.4 0 1 1-12.8 0C5.6 11 8 7.9 12 2.6z"/></svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div class="p-name">Comunitário da sala</div>
+                    <div class="p-sub">100 × 40 × 50 cm · 200 L</div>
+                  </div>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#C92A2A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 12.5h9L17.5 7"/></svg>
+                </div>
+                <div class="p-chips"><span class="p-chip">Água doce</span><span class="p-chip">16 peixes</span><span class="p-chip">2 espécies</span></div>
+                <div class="p-bar-track"><div class="p-bar-fill" style="width:30%;background:#2B8A3E"></div></div>
+                <div class="p-meta"><span>60 L ocupados de 200 L</span><span style="color:#2B8A3E;font-weight:700">30% · Tranquilo</span></div>
+              </div>
+
+              <div class="p-card">
+                <div class="p-row">
+                  <div class="p-sq" style="background:rgba(43,138,62,.15);color:#2B8A3E">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.6c4 5.3 6.4 8.4 6.4 11.3a6.4 6.4 0 1 1-12.8 0C5.6 11 8 7.9 12 2.6z"/></svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div class="p-name">Plantado 60P</div>
+                    <div class="p-sub">60 × 30 × 36 cm · 64 L</div>
+                  </div>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#C92A2A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 12.5h9L17.5 7"/></svg>
+                </div>
+                <div class="p-chips"><span class="p-chip">Plantado</span><span class="p-chip">10 peixes</span><span class="p-chip">2 espécies</span></div>
+                <div class="p-bar-track"><div class="p-bar-fill" style="width:68%;background:#2B8A3E"></div></div>
+                <div class="p-meta"><span>44 L ocupados de 64 L</span><span style="color:#2B8A3E;font-weight:700">68% · Tranquilo</span></div>
+              </div>
+
+              <div class="p-card">
+                <div class="p-row">
+                  <div class="p-sq" style="background:rgba(16,152,173,.15);color:#1098AD">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M12 2.6c4 5.3 6.4 8.4 6.4 11.3a6.4 6.4 0 1 1-12.8 0C5.6 11 8 7.9 12 2.6z"/></svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div class="p-name">Aquário do Huan</div>
+                    <div class="p-sub">40 × 25 × 30 cm · 30 L</div>
+                  </div>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#C92A2A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 12.5h9L17.5 7"/></svg>
+                </div>
+                <div class="p-chips"><span class="p-chip">Água doce</span><span class="p-chip">10 peixes</span><span class="p-chip">1 espécie</span></div>
+                <div class="p-bar-track"><div class="p-bar-fill" style="width:100%;background:#C92A2A"></div></div>
+                <div class="p-meta"><span>50 L ocupados de 30 L</span><span style="color:#C92A2A;font-weight:700">166% · Superlotado</span></div>
+              </div>
+            </div>
+            <div class="p-fab">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Novo aquário
+            </div>
+            <div class="p-nav">
+              <div><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 3l9 7.5V21h-6v-6H9v6H3V10.5L12 3z"/></svg>Início</div>
+              <div class="on"><span class="pill">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6c4 5.3 6.4 8.4 6.4 11.3a6.4 6.4 0 1 1-12.8 0C5.6 11 8 7.9 12 2.6z"/></svg>
+              </span>Aquários</div>
+              <div><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M21 12c-1.7 3.2-5 5.2-8.4 5.2-4.2 0-7.6-2.6-7.6-5.2s3.4-5.2 7.6-5.2C16 6.8 19.3 8.8 21 12z"/><path d="M5.2 12L1.8 8.8v6.4L5.2 12z"/></svg>Espécies</div>
+              <div><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 5h2v2h-2V7zm0 4h2v6h-2v-6z"/></svg>Sobre</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mock-side">
+          <h3>Lista de Aquários</h3>
+          <p class="role">Tela 2 · programada por Huan</p>
+
+          <dl class="spec">
+            <dt>Elementos</dt>
+            <dd>
+              Barra de título; faixa de resumo com a soma de litros e a ocupação geral; um cartão
+              por aquário, cada um com ícone, nome, as três medidas, os litros calculados,
+              etiquetas de tipo e contagem, barra de ocupação colorida pelo status e ícone de
+              lixeira; botão flutuante no canto inferior direito; barra de abas.
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>Posição</dt>
+            <dd>
+              Lista vertical de cartões de largura inteira, empilhados, com rolagem. O resumo fica
+              no topo da lista. O botão flutuante sobrepõe a lista no canto inferior direito,
+              acima da barra de abas.
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>O que cada botão faz</dt>
+            <dd>
+              <ul>
+                <li><b>Toque no cartão</b> — abre o detalhe daquele aquário (não é sempre o mesmo: vai o id do item tocado).</li>
+                <li><b>Lixeira</b> — remove o aquário e, junto, as espécies que vivem nele.</li>
+                <li><b>Novo aquário</b> — abre o formulário de cadastro.</li>
+              </ul>
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>Detalhe de cor</dt>
+            <dd>A barra muda de cor pelo status: verde abaixo de 70%, ciano entre 70% e 89%, laranja entre 90% e 100% e vermelho quando passa de 100%.</dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- ---------- TELA 3: DETALHE DO AQUÁRIO ---------- -->
+      <article class="mock">
+        <div class="phone">
+          <div class="phone-in">
+            <div class="p-top" style="background:#1098AD">
+              <div class="p-status"><span>14:32</span><span>▮▮▮</span></div>
+              <div class="p-bar">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+                <span class="t">Aquário do Huan</span>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 12.5h9L17.5 7"/></svg>
+              </div>
+            </div>
+            <div class="p-body">
+              <div class="p-card">
+                <div class="p-row">
+                  <div style="flex:1;min-width:0">
+                    <div class="p-name" style="font-size:14px">Aquário do Huan</div>
+                    <div class="p-sub" style="margin-top:2px">Medidas: 40 × 25 × 30 cm</div>
+                  </div>
+                  <span class="p-chip a">Água doce</span>
+                </div>
+              </div>
+
+              <div class="p-card">
+                <div class="p-sec" style="margin:0">Capacidade calculada</div>
+                <div class="p-sub" style="margin-top:7px">40 × 25 × 30 ÷ 1000</div>
+                <div style="font-size:24px;font-weight:800;color:#0B7285;letter-spacing:-.02em;margin-top:2px">30 <span style="font-size:11px;font-weight:700">litros</span></div>
+                <div class="p-sub" style="margin-top:6px;font-size:8.5px">Este número não fica guardado: é recalculado a cada leitura a partir das medidas.</div>
+              </div>
+
+              <div class="p-card">
+                <div class="p-row">
+                  <div class="p-name" style="flex:1">Ocupação</div>
+                  <span class="p-chip" style="background:#FFE3E3;color:#C92A2A">Superlotado</span>
+                </div>
+                <div class="p-bar-track"><div class="p-bar-fill" style="width:100%;background:#C92A2A"></div></div>
+                <div class="p-meta" style="font-size:9.5px"><span style="font-weight:700;color:#0B2027">50 L de 30 L</span><span style="color:#C92A2A;font-weight:800;font-size:11px">166%</span></div>
+                <div class="p-sub" style="margin-top:5px">Passou do volume recomendado. Risco para os peixes.</div>
+              </div>
+
+              <div class="p-card">
+                <div class="p-sec" style="margin:0">Peixes neste aquário (1)</div>
+                <div class="p-sub" style="margin-top:3px;font-size:8.5px">Espécies da outra lista que escolheram este aquário.</div>
+                <div class="p-line"></div>
+                <div class="p-row">
+                  <svg viewBox="0 0 24 24" width="15" height="15" fill="#0B7285" aria-hidden="true"><path d="M21 12c-1.7 3.2-5 5.2-8.4 5.2-4.2 0-7.6-2.6-7.6-5.2s3.4-5.2 7.6-5.2C16 6.8 19.3 8.8 21 12z"/><path d="M5.2 12L1.8 8.8v6.4L5.2 12z"/></svg>
+                  <div style="flex:1;min-width:0">
+                    <div class="p-name" style="font-size:12px">Guppy</div>
+                    <div class="p-sub" style="font-size:8.5px">5 cm × 10 · pH 7.2</div>
+                  </div>
+                  <span style="font-size:9px;font-weight:700;color:#075063">50 L</span>
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#B9CDD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+                </div>
+              </div>
+
+              <div class="p-btn">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Adicionar espécie neste aquário
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mock-side">
+          <h3>Detalhe do Aquário</h3>
+          <p class="role">Tela 3 · programada por Felipe · a tela com o passo a mais</p>
+
+          <dl class="spec">
+            <dt>Elementos</dt>
+            <dd>
+              Barra de título com seta de voltar e lixeira; cartão de identificação com tipo e
+              medidas; cartão do volume calculado mostrando a conta aberta; cartão de ocupação com
+              etiqueta de status, barra e percentual; cartão com os peixes que vivem ali; botão de
+              adicionar espécie. Esta tela não tem a barra de abas.
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>Posição</dt>
+            <dd>
+              Coluna rolável com cartões de largura inteira empilhados. A seta de voltar fica na
+              borda esquerda da barra de título e a lixeira na direita. O botão de adicionar fica
+              no fim da rolagem, depois de tudo.
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>O que cada botão faz</dt>
+            <dd>
+              <ul>
+                <li><b>Seta de voltar</b> — volta para a lista de aquários.</li>
+                <li><b>Lixeira</b> — remove o aquário e volta para a lista de aquários.</li>
+                <li><b>Linha do peixe</b> — abre o detalhe daquela espécie, com o id dela.</li>
+                <li><b>Adicionar espécie neste aquário</b> — abre o formulário de espécie já com este aquário escolhido.</li>
+              </ul>
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>A complexidade extra desta tela</dt>
+            <dd>
+              Ela não repete os campos do item: calcula o volume a partir das três medidas,
+              junta as duas listas do app para dizer quantos litros os peixes já consomem e se o
+              aquário está superlotado, e serve de ponto de partida para outra navegação.
+            </dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- ---------- TELA 4: LISTA DE ESPÉCIES ---------- -->
+      <article class="mock">
+        <div class="phone">
+          <div class="phone-in">
+            <div class="p-top">
+              <div class="p-status"><span>14:32</span><span>▮▮▮</span></div>
+              <div class="p-bar"><span class="t">Espécies</span></div>
+            </div>
+            <div class="p-body">
+              <div class="p-card">
+                <div class="p-row">
+                  <div class="p-sq" style="background:#DCEEF2;color:#0B7285">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M21 12c-1.7 3.2-5 5.2-8.4 5.2-4.2 0-7.6-2.6-7.6-5.2s3.4-5.2 7.6-5.2C16 6.8 19.3 8.8 21 12z"/><path d="M5.2 12L1.8 8.8v6.4L5.2 12z"/></svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div class="p-name">Neon Cardinal</div>
+                    <div class="p-sub" style="font-style:italic">Paracheirodon innesi</div>
+                    <div class="p-chips"><span class="p-chip a">×12</span><span class="p-chip">3 cm</span><span class="p-chip">36 L</span></div>
+                  </div>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#C92A2A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 12.5h9L17.5 7"/></svg>
+                </div>
+              </div>
+
+              <div class="p-card">
+                <div class="p-row">
+                  <div class="p-sq" style="background:#DCEEF2;color:#0B7285">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M21 12c-1.7 3.2-5 5.2-8.4 5.2-4.2 0-7.6-2.6-7.6-5.2s3.4-5.2 7.6-5.2C16 6.8 19.3 8.8 21 12z"/><path d="M5.2 12L1.8 8.8v6.4L5.2 12z"/></svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div class="p-name">Coridora Paleatus</div>
+                    <div class="p-sub" style="font-style:italic">Corydoras paleatus</div>
+                    <div class="p-chips"><span class="p-chip a">×4</span><span class="p-chip">6 cm</span><span class="p-chip">24 L</span></div>
+                  </div>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#C92A2A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 12.5h9L17.5 7"/></svg>
+                </div>
+              </div>
+
+              <div class="p-card" style="border:1.6px solid #0B7285;background:#DCEEF2">
+                <div class="p-row">
+                  <div class="p-sq" style="background:#fff;color:#0B7285">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M21 12c-1.7 3.2-5 5.2-8.4 5.2-4.2 0-7.6-2.6-7.6-5.2s3.4-5.2 7.6-5.2C16 6.8 19.3 8.8 21 12z"/><path d="M5.2 12L1.8 8.8v6.4L5.2 12z"/></svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div class="p-name">Tetra Serpae</div>
+                    <div class="p-sub" style="font-style:italic">Hyphessobrycon eques</div>
+                    <div class="p-chips"><span class="p-chip a">×8</span><span class="p-chip">4 cm</span><span class="p-chip">32 L</span></div>
+                  </div>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#C92A2A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9.5 7V4.5h5V7M6.5 7l1 12.5h9L17.5 7"/></svg>
+                </div>
+              </div>
+
+              <div class="p-card">
+                <div class="p-row">
+                  <div class="p-sq" style="background:#DCEEF2;color:#0B7285">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" aria-hidden="true"><path d="M21 12c-1.7 3.2-5 5.2-8.4 5.2-4.2 0-7.6-2.6-7.6-5.2s3.4-5.2 7.6-5.2C16 6.8 19.3 8.8 21 12z"/><path d="M5.2 12L1.8 8.8v6.4L5.2 12z"/></svg>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div class="p-name">Betta</div>
+                    <div class="p-sub" style="font-style:italic">Betta splendens</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="p-fab">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Nova espécie
+            </div>
+            <div class="p-nav">
+              <div><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 3l9 7.5V21h-6v-6H9v6H3V10.5L12 3z"/></svg>Início</div>
+              <div><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2.6c4 5.3 6.4 8.4 6.4 11.3a6.4 6.4 0 1 1-12.8 0C5.6 11 8 7.9 12 2.6z"/></svg>Aquários</div>
+              <div class="on"><span class="pill">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M21 12c-1.7 3.2-5 5.2-8.4 5.2-4.2 0-7.6-2.6-7.6-5.2s3.4-5.2 7.6-5.2C16 6.8 19.3 8.8 21 12z"/><path d="M5.2 12L1.8 8.8v6.4L5.2 12z"/></svg>
+              </span>Espécies</div>
+              <div><svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 5h2v2h-2V7zm0 4h2v6h-2v-6z"/></svg>Sobre</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mock-side">
+          <h3>Lista de Espécies</h3>
+          <p class="role">Tela 4 · programada por Huan</p>
+
+          <dl class="spec">
+            <dt>Elementos</dt>
+            <dd>
+              Barra de título; um cartão por espécie com ícone, nome popular, nome científico em
+              itálico, etiquetas de quantidade, tamanho adulto e litros necessários, e o ícone de
+              lixeira; botão flutuante; barra de abas. O terceiro cartão aparece marcado, mostrando
+              o resultado de um toque longo.
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>Posição</dt>
+            <dd>
+              Lista rolável de cartões logo abaixo da barra de título. Quando existe espécie
+              marcada, uma barra escura entra no topo da lista.
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>O que cada botão faz</dt>
+            <dd>
+              <ul>
+                <li><b>Toque no cartão</b> — abre o detalhe daquela espécie.</li>
+                <li><b>Toque longo</b> — marca a espécie e faz aparecer a barra de remoção em lote.</li>
+                <li><b>Lixeira</b> — remove só aquela espécie.</li>
+                <li><b>Nova espécie</b> — abre o formulário.</li>
+              </ul>
+            </dd>
+          </dl>
+        </div>
+      </article>
+
+      <!-- ---------- TELA 5: NOVA ESPÉCIE ---------- -->
+      <article class="mock">
+        <div class="phone">
+          <div class="phone-in">
+            <div class="p-top">
+              <div class="p-status"><span>14:32</span><span>▮▮▮</span></div>
+              <div class="p-bar">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+                <span class="t">Nova espécie</span>
+              </div>
+            </div>
+            <div class="p-body" style="gap:8px">
+              <div class="p-field">
+                <div class="lab">Nome popular</div>
+                <div class="val">Neon Cardinal</div>
+              </div>
+              <div class="p-field">
+                <div class="lab">Nome científico (opcional)</div>
+                <div class="val">Paracheirodon innesi</div>
+              </div>
+              <div class="p-2col">
+                <div class="p-field">
+                  <div class="lab">Quantidade</div>
+                  <div class="val">12</div>
+                </div>
+                <div class="p-field">
+                  <div class="lab">Tamanho adulto</div>
+                  <div class="val">3 cm</div>
+                </div>
+              </div>
+              <div class="p-field">
+                <div class="lab">pH ideal da água</div>
+                <div class="val">6,5</div>
+              </div>
+
+              <div class="p-sec" style="margin-top:3px">Em qual aquário esta espécie vai viver</div>
+
+              <div class="p-sel">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="#0B7285" aria-hidden="true"><path d="M12 2.6c4 5.3 6.4 8.4 6.4 11.3a6.4 6.4 0 1 1-12.8 0C5.6 11 8 7.9 12 2.6z"/></svg>
+                <div style="flex:1;min-width:0">
+                  <div class="p-name" style="font-size:12px">Comunitário da sala</div>
+                  <div class="p-sub" style="font-size:8.5px">Água doce · 200 L · 30% ocupado</div>
+                </div>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="#0B7285" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.4l-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg>
+              </div>
+              <div class="p-sel off">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="#52616B" aria-hidden="true"><path d="M12 2.6c4 5.3 6.4 8.4 6.4 11.3a6.4 6.4 0 1 1-12.8 0C5.6 11 8 7.9 12 2.6z"/></svg>
+                <div style="flex:1;min-width:0">
+                  <div class="p-name" style="font-size:12px">Plantado 60P</div>
+                  <div class="p-sub" style="font-size:8.5px">Plantado · 64 L · 68% ocupado</div>
+                </div>
+              </div>
+
+              <div class="p-soft">
+                <div class="p-sec" style="margin:0;color:#075063">Prévia</div>
+                <div style="font-size:12.5px;font-weight:800;color:#0B7285;margin-top:4px">Esta espécie vai ocupar 36 litros</div>
+                <div class="p-sub" style="margin-top:4px">“Comunitário da sala” tem 200 L e está com 60 L ocupados.</div>
+                <div class="p-bar-track"><div class="p-bar-fill" style="width:48%;background:#1098AD"></div></div>
+                <div class="p-sub" style="font-size:8.5px">Depois de salvar: 96 L de 200 L · 48%</div>
+              </div>
+
+              <div class="p-btn">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6h11l3 3v9H5zM8 3.5h6"/></svg>
+                Salvar espécie
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mock-side">
+          <h3>Nova Espécie</h3>
+          <p class="role">Tela 5 · mockup · formulário de cadastro</p>
+
+          <dl class="spec">
+            <dt>Elementos</dt>
+            <dd>
+              Barra de título com seta de voltar; campos de nome popular, nome científico,
+              quantidade, tamanho adulto e pH; lista de aquários para escolher, com um destacado;
+              cartão de prévia mostrando como o aquário fica depois de salvar; botão de salvar.
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>Posição</dt>
+            <dd>
+              Formulário em coluna rolável. Quantidade e tamanho ficam lado a lado em uma Row; pH
+              ocupa a largura toda. O seletor de aquário vem depois dos campos; a prévia fecha o
+              conteúdo e o botão de salvar fica no fim.
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>O que cada botão faz</dt>
+            <dd>
+              <ul>
+                <li><b>Tocar em um aquário</b> — escolhe onde a espécie vai viver; a borda e o quadro de seleção mudam na hora.</li>
+                <li><b>Salvar espécie</b> — grava e volta para a lista, onde a nova espécie aparece.</li>
+                <li><b>Seta de voltar</b> — descarta e volta sem salvar.</li>
+              </ul>
+            </dd>
+          </dl>
+          <dl class="spec">
+            <dt>Por que a prévia existe</dt>
+            <dd>
+              A conta é a mesma do detalhe, mas mostrada antes de salvar: se a espécie for deixar o
+              aquário superlotado, a barra fica vermelha e o aviso aparece antes do erro acontecer.
+            </dd>
+          </dl>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ================= C. DIAGRAMA DE FLUXO ================= -->
+  <section id="fluxo">
+    <div class="sec-head"><span class="n">C</span><h2>Mapa de navegação</h2></div>
+    <p class="lead">
+      Cada caixa é uma tela; cada seta é um caminho que existe de verdade no aplicativo. Os
+      números nas setas são explicados logo abaixo do desenho.
+    </p>
+
+    <div class="flow-wrap">
+      <div class="flow-scroll">
+        <svg viewBox="0 0 1120 560" role="img" aria-label="Diagrama de navegação do aplicativo MeuAquário, descrito em lista logo abaixo">
+          <defs>
+            <marker id="seta" viewBox="0 0 12 12" refX="10.5" refY="6" markerWidth="6.5" markerHeight="6.5" orient="auto">
+              <path d="M0 1.6 L11 6 L0 10.4 z"/>
+            </marker>
+            <marker id="seta-volta" viewBox="0 0 12 12" refX="10.5" refY="6" markerWidth="6.5" markerHeight="6.5" orient="auto">
+              <path d="M0 1.6 L11 6 L0 10.4 z"/>
+            </marker>
+          </defs>
+
+          <!-- faixa das abas -->
+          <rect class="fl-band" x="76" y="40" width="920" height="88" rx="18"/>
+          <text class="fl-lab" x="86" y="30">TELAS COM A BARRA DE ABAS (BOTTOMNAVIGATION)</text>
+
+          <!-- tier 1: abas -->
+          <g>
+            <rect class="fl-node aba" x="100" y="60" width="180" height="48" rx="10"/>
+            <text class="fl-t" x="190" y="81" text-anchor="middle">Início</text>
+            <text class="fl-t sm" x="190" y="95" text-anchor="middle">tela que abre</text>
+          </g>
+          <g>
+            <rect class="fl-node aba" x="330" y="60" width="180" height="48" rx="10"/>
+            <text class="fl-t" x="420" y="81" text-anchor="middle">Lista de Aquários</text>
+            <text class="fl-t sm" x="420" y="95" text-anchor="middle">LazyColumn + Card</text>
+          </g>
+          <g>
+            <rect class="fl-node aba" x="560" y="60" width="180" height="48" rx="10"/>
+            <text class="fl-t" x="650" y="81" text-anchor="middle">Lista de Espécies</text>
+            <text class="fl-t sm" x="650" y="95" text-anchor="middle">LazyColumn + Card</text>
+          </g>
+          <g>
+            <rect class="fl-node aba" x="790" y="60" width="180" height="48" rx="10"/>
+            <text class="fl-t" x="880" y="81" text-anchor="middle">Sobre</text>
+            <text class="fl-t sm" x="880" y="95" text-anchor="middle">dados de exemplo</text>
+          </g>
+
+          <!-- tier 2: detalhes -->
+          <text class="fl-lab" x="30" y="268">DETALHES</text>
+          <g>
+            <rect class="fl-node det" x="330" y="240" width="180" height="48" rx="10"/>
+            <text class="fl-t" x="420" y="261" text-anchor="middle">Detalhe do Aquário</text>
+            <text class="fl-t sm" x="420" y="275" text-anchor="middle">calcula e junta as listas</text>
+          </g>
+          <g>
+            <rect class="fl-node det" x="560" y="240" width="180" height="48" rx="10"/>
+            <text class="fl-t" x="650" y="261" text-anchor="middle">Detalhe da Espécie</text>
+            <text class="fl-t sm" x="650" y="275" text-anchor="middle">edita a quantidade ali</text>
+          </g>
+
+          <!-- tier 3: formulários -->
+          <text class="fl-lab" x="30" y="438">FORMULÁRIOS</text>
+          <g>
+            <rect class="fl-node for" x="330" y="410" width="180" height="48" rx="10"/>
+            <text class="fl-t" x="420" y="431" text-anchor="middle">Novo Aquário</text>
+            <text class="fl-t sm" x="420" y="445" text-anchor="middle">prévia do volume</text>
+          </g>
+          <g>
+            <rect class="fl-node for" x="560" y="410" width="180" height="48" rx="10"/>
+            <text class="fl-t" x="650" y="431" text-anchor="middle">Nova Espécie</text>
+            <text class="fl-t sm" x="650" y="445" text-anchor="middle">prévia da ocupação</text>
+          </g>
+
+          <!-- arestas -->
+          <path class="fl-edge" d="M190 108 L190 263 L322 263"/>
+          <path class="fl-edge" d="M420 108 L420 232"/>
+          <path class="fl-edge" d="M330 84 L250 84 L250 434 L322 434"/>
+          <path class="fl-edge" d="M650 108 L650 232"/>
+          <path class="fl-edge" d="M740 84 L760 84 L760 434 L748 434"/>
+          <path class="fl-edge" d="M510 258 L552 258"/>
+          <path class="fl-edge" d="M560 278 L518 278"/>
+          <path class="fl-edge" d="M420 288 L420 370 L650 370 L650 402"/>
+          <circle class="fl-jump" cx="250" cy="263" r="4.5"/>
+
+          <!-- números das setas -->
+          <g>
+            <circle cx="190" cy="185" r="9.5" class="fl-num"/>
+            <text x="190" y="189" text-anchor="middle" class="fl-num-t">1</text>
+          </g>
+          <g>
+            <circle cx="420" cy="176" r="9.5" class="fl-num"/>
+            <text x="420" y="180" text-anchor="middle" class="fl-num-t">2</text>
+          </g>
+          <g>
+            <circle cx="250" cy="360" r="9.5" class="fl-num"/>
+            <text x="250" y="364" text-anchor="middle" class="fl-num-t">3</text>
+          </g>
+          <g>
+            <circle cx="650" cy="176" r="9.5" class="fl-num"/>
+            <text x="650" y="180" text-anchor="middle" class="fl-num-t">4</text>
+          </g>
+          <g>
+            <circle cx="760" cy="360" r="9.5" class="fl-num"/>
+            <text x="760" y="364" text-anchor="middle" class="fl-num-t">5</text>
+          </g>
+          <g>
+            <circle cx="535" cy="258" r="9.5" class="fl-num"/>
+            <text x="535" y="262" text-anchor="middle" class="fl-num-t">6</text>
+          </g>
+          <g>
+            <circle cx="535" cy="278" r="9.5" class="fl-num"/>
+            <text x="535" y="282" text-anchor="middle" class="fl-num-t">7</text>
+          </g>
+          <g>
+            <circle cx="420" cy="330" r="9.5" class="fl-num"/>
+            <text x="420" y="334" text-anchor="middle" class="fl-num-t">8</text>
+          </g>
+
+          <!-- rodapés das caixas terminais -->
+          <text class="fl-lab" x="880" y="196" text-anchor="middle">não leva a nenhuma tela nova</text>
+          <text class="fl-lab" x="420" y="510">toda tela daqui tem a seta de voltar na barra de título</text>
+          <text class="fl-lab" x="650" y="510">ao salvar, volta para a tela que abriu o formulário</text>
+        </svg>
+      </div>
+
+      <div class="flow-legend">
+        <span><i></i> ir para outra tela</span>
+        <span><i class="nav"></i> barra de abas (as 4 se alcançam entre si)</span>
+        <span><i class="dash"></i> o círculo branco marca dois traços que se cruzam sem se conectar</span>
+      </div>
+
+      <dl class="spec" style="margin-top:16px">
+        <dt>O que cada seta numerada representa</dt>
+        <dd>
+          <ul>
+            <li><b>1</b> — Início → Detalhe do Aquário: só o cartão de alerta leva direto para o aquário que está superlotado.</li>
+            <li><b>2</b> — Lista de Aquários → Detalhe do Aquário: toque no cartão de um aquário.</li>
+            <li><b>3</b> — Lista de Aquários → Novo Aquário: botão flutuante “Novo aquário”.</li>
+            <li><b>4</b> — Lista de Espécies → Detalhe da Espécie: toque no cartão de uma espécie.</li>
+            <li><b>5</b> — Lista de Espécies → Nova Espécie: botão flutuante “Nova espécie”.</li>
+            <li><b>6</b> — Detalhe do Aquário → Detalhe da Espécie: toque em uma linha da lista de peixes daquele aquário.</li>
+            <li><b>7</b> — Detalhe da Espécie → Detalhe do Aquário: botão “Ver aquário”.</li>
+            <li><b>8</b> — Detalhe do Aquário → Nova Espécie: botão “Adicionar espécie neste aquário”. A rota leva o id do aquário, então o formulário abre com ele já escolhido.</li>
+          </ul>
+        </dd>
+      </dl>
+      <dl class="spec" style="margin-top:14px">
+        <dt>Voltar</dt>
+        <dd>
+          Toda tela de detalhe e de formulário tem a seta de voltar na barra de título, que volta
+          para a tela anterior. Não desenhamos uma seta para cada uma porque isso vale para todas.
+        </dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ================= D. CANVAS ================= -->
+  <section id="canvas">
+    <div class="sec-head"><span class="n">D</span><h2>Canvas — por que este aplicativo existe</h2></div>
+    <p class="lead">
+      As respostas abaixo foram escritas antes de desenhar as telas, e foram elas que decidiram o
+      que ficou na tela inicial e o que ficou de fora.
+    </p>
+
+    <div class="canvas-grid">
+
+      <article class="canvas-card">
+        <p class="q"><span class="n">PERGUNTA 01</span>Qual problema resolve e para quem é?</p>
+        <p>
+          Quem cria peixe de aquário decide quase tudo no escuro: quantos peixes cabem, se aquele
+          aquário de 40 cm aguenta mais dois, se o filtro dá conta. As informações ficam espalhadas
+          em papel, no bloco de notas do celular, ou na cabeça de quem cuida.
+        </p>
+        <p class="pull">
+          O usuário imaginário é o aquarista amador que tem de um a quatro aquários em casa e já
+          perdeu peixe por superlotação ou por erro de conta.
+        </p>
+        <p>
+          Não é o lojista profissional, que já trabalha com sistema próprio de estoque e não tem
+          esse problema.
+        </p>
+      </article>
+
+      <article class="canvas-card">
+        <p class="q"><span class="n">PERGUNTA 02</span>Por que abriria hoje? E amanhã?</p>
+        <p>
+          <b>Hoje:</b> a pessoa acabou de comprar um peixe e quer saber se ele cabe no aquário que
+          já tem em casa.
+        </p>
+        <p>
+          <b>Amanhã:</b> ela quer conferir quantos peixes tem em cada aquário e se algum está
+          chegando no limite, ou precisa do volume antes de comprar um aquário maior.
+        </p>
+        <p class="pull">
+          O app não é de uso diário: é de uso no momento da decisão. Isso mudou o desenho — a tela
+          inicial precisa entregar a resposta de imediato, porque quem entra já tem uma pergunta.
+        </p>
+      </article>
+
+      <article class="canvas-card">
+        <p class="q"><span class="n">PERGUNTA 03</span>Qual é a única coisa que precisa funcionar bem?</p>
+        <p>
+          Transformar três medidas em centímetros numa resposta clara: “este aquário tem tantos
+          litros e você já está usando tanto por cento dele”.
+        </p>
+        <p class="pull">
+          Se essa conta não estiver certa e visível, o aplicativo não serve para nada.
+        </p>
+        <p>
+          Foi por isso que ela aparece em três lugares diferentes: no resumo da tela inicial, na
+          barra de cada cartão da lista e aberta por inteiro no detalhe.
+        </p>
+      </article>
+
+      <article class="canvas-card">
+        <p class="q"><span class="n">PERGUNTA 04</span>Como geraria valor ou dinheiro?</p>
+        <p>
+          <b>Assinatura:</b> a versão gratuita guarda até dois aquários; a paga libera aquários
+          ilimitados, histórico de trocas de água e alertas de manutenção.
+        </p>
+        <p>
+          <b>Parceria com lojas de aquarismo:</b> quando alguém for cadastrar uma espécie que não
+          cabe no aquário que tem, a loja aparece oferecendo o aquário maior. É uma propaganda que
+          só aparece na hora em que ela é útil.
+        </p>
+        <p class="pull">
+          Nada disso está implementado. É a hipótese que decidiu duas telas, e só.
+        </p>
+      </article>
+
+      <article class="canvas-card">
+        <p class="q"><span class="n">PERGUNTA 05</span>Que decisões de tela vieram dessas respostas?</p>
+        <p>
+          <b>1.</b> A tela inicial mostra um resumo com aviso de superlotação, e não uma lista de
+          cadastros: quem abre o app quer saber se está tudo bem com os peixes, não qual é o
+          cadastro número três.
+        </p>
+        <p>
+          <b>2.</b> O formulário de espécie mostra uma prévia dizendo como o aquário vai ficar
+          depois de salvar, antes de a pessoa confirmar — daí a pergunta “por que abriria hoje”
+          virar uma tela que responde antes do erro.
+        </p>
+        <p>
+          <b>3.</b> O detalhe do aquário mostra a conta aberta, e não só o resultado: quem não
+          entende de onde veio o número não confia nele, e o app inteiro depende dessa confiança.
+        </p>
+      </article>
+
+    </div>
+  </section>
+
+  <footer class="foot">
+    <span>MeuAquário · Trabalho 1 — documentação de mockups e Canvas</span>
+    <span>Felipe Gabriel da Silva · Huan Machado de Oliveira</span>
+  </footer>
+
+</div>
